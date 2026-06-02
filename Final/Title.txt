@@ -1,0 +1,59 @@
+拉普拉斯方法
+高斯积分
+Gamma函数
+
+！渐进展开
+渐进级数
+符号定义：远小于 渐进于 O（）渐进展开
+
+！method of stationary phase
+Riemann-Lebesque Lemma
+bessel function
+
+! local analysis of ode
+classification of x0
+ordinary point
+regular singular point
+irregular singular point
+Airy Equation
+
+! Dominant Balance
+Liuville & Green
+
+! Perturbation Methods
+algebraic equations
+
+! Perturbation methods for ODE
+projectile problem
+
+! Singular Perturbation Method
+! Boundary Layer
+Matched Asymtotic Expansion
+Location and Thickness of Boundary Layer
+
+! Boundary Layer in Nonlinear Systems
+Geometric Method
+
+! MKB Method
+Schrodinger's Equation
+
+! Eigenvalue Problem
+
+! Bifurcation
+1D  2D
+saddle-node bifurcation
+bifurcation diagram
+Transcritical bifurcation
+pitchfork bifurcation
+
+! fixed-points
+van.der Pol equation
+Dynamic of fixed-pionts
+Forced Harmonic oscillator
+Nonlinear spring
+Duffing oscillator
+Poincare-Lindstedt method
+
+! Multiple scale analysis
+
+! Reyleigh-Lorentz ossillator
