@@ -1,0 +1,46 @@
+Fundamentals
+--要求掌握asymptotic sequence
+    要求能够判断一个技术是否是渐进级数
+--要求掌握asymptotic expansion
+    要求能够理解渐近展开的定义和判断一个展开是否是渐近展开
+--理解什么是transcendentallly smallness
+
+--要求掌握asymptotic expansion在拉普拉斯方法和stationary phase中的使用和思路
+
+--掌握dominant balance
+
+--掌握rescaling
+
+--要求掌握在一维系统中的dynamical system bifurcation
+    normal form  fixed points  stability
+    bifurcation parameters  bifurcation diagram
+
+--nonuniformity
+    --local rapid change
+        要求理解边界层理论并使用该方法解决该类问题
+        有全套的流程
+    --global rapid change
+        要求掌握WKB方法并使用该方法解决该类问题
+        有全套的流程
+
+--multiple scale analysis
+    要求掌握解决某些近似方法在长时间尺度下累计出现问题的方案longtime breakdown
+    --Lindstedt-Poincare
+        要求理解该方法的思路并运用
+    --slow-fast time scale
+        要求理解该方法的思路并运用
+    --Rayleigh-Lorentz
+        要求了解该理论的内心概念
+        energy is not conserver, adiabatic invariant
+
+--discretization
+    要求掌握基础的将连续问题离散化的能力
+
+
+--考试大概率出现的内容：
+    --渐近展开
+    --拉普拉斯方法或者stationary->两步走方法
+    --Rescaling 1-D bifurcation
+    --解决相关ODE问题
+    --Boundary Layer理论到turning points 到WKB
+    --2-time methods（--slow-fast time scale）

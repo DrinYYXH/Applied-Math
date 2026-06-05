@@ -71,3 +71,39 @@ Normal Form → 一维分岔（S-N / Transcritical / Pitchfork）
 - **OCR 后处理**：EasyOCR 对数学符号（$e^{-1/\epsilon}$、$\phi'(t)=0$ 等）识别有损，需结合课程知识修正
 
 **How to apply**：复习时按"失效类型"串联三大部分（边界层/WKB/多尺度），而非按章节死记；处理含中文文件名的图像时优先复制为 ASCII 文件名。
+
+## 2026-06-05（续）— 课程总结按脉络图框架 + 老师考点标注全面优化
+
+### 产出文件
+
+- `Final/课程总结.md`：经脉络图框架重组 + 老师考点标注（🔥+⭐）+ 考试提示框 + 2 个补充知识
+- `Final/期末考提示_transcript.txt`：老师复习课录音转文字
+- `Final/要求内容.txt`：同学整理的考点清单
+
+### 课程总结文档改动汇总
+
+1. **顶部新增考试信息栏**：~7-8 题、cheat sheet A4 正反面、公式会给、步骤分 > 计算分、英文答卷
+2. **脉络总览**：ASCII 逻辑链图 + 五部分映射表 + 阅读顺序提示
+3. **目录按脉络图五部分重组**，每节标注 🔥/⭐
+4. **22 节全部使用显式锚点** `<a id="sec-N">`，跨渲染器可跳转
+5. **五个分部引言含考试重点提示框**，覆盖全部 6 条考试线路
+6. **补充 1：Rayleigh-Lorentz 振子**（能量不守恒 + adiabatic invariant）
+7. **补充 2：离散化 Discretization**（差分格式 + 三类应用）
+8. **总结重写**：按"三种失效 → 三种方法"框架组织
+
+### 老师口述关键考点（来自 transcript，已融入课程总结）
+
+- **非标准渐近展开**：$\sqrt{25+x}$ 展为 $\{1,\cos x,\sin x,\sin^2 x\}$，按定义逐项求系数
+- **Laplace 四步**：缩上限 → 延展 ±∞ → Taylor → 高斯终结
+- **Characteristic equation**：常系数线性 ODE 的求解基础（边界层的前置技能）
+- **Boundary Layer 五条要求**：基本假设、matching 定系数、自己判位置、dominant balance 定厚度（$\delta=\epsilon^\gamma$）、五步流程
+- **WKB 逻辑链**：会推 → turning point → 不 work → **回到 boundary layer** → inner layer → 确定 thickness $\epsilon^{2/3}$
+- **分岔考试路径**：在 rescaled 方程上 → identify bifurcation parameter → 画 bifurcation diagram → 识别类型（含 imperfect pitchfork）
+- **Two-timing 够用**：$t$ 和 $\epsilon t$ 掌握就基本掌握了多尺度，不需更复杂
+
+### 文档锚点修复经验
+
+- Markdown 自动生成的锚点（`#1-拉普拉斯方法-laplaces-method`）在不同渲染器中行为不一致（中文编码、括号处理）
+- **可靠性方案**：用显式 `<a id="sec-N"></a>` + `[text](#sec-N)`，简单位置无关
+
+**How to apply**：考前按 transcript 中老师口述的考点逐条自检；非标准序列展开和 WKB→boundary layer 回退是老师特别强调的可能失分点。

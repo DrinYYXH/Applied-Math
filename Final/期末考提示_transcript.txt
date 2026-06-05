@@ -1,0 +1,42 @@
+He MengFei: 然后回顾一下，大概会考一些什么内容，我们考试没有完全出好，但是我差不多有一份草稿。
+
+He MengFei: 你要对一下asymptotic expansion，给你一个asymptotic sequence。给你一个function，√(25+x)，我让你展成sinx， cosx， sin^2 x，你会不会展，它的步骤是什么，根据它的定义，我每一项。这个笔记上都有，回去看一下就知道了。
+
+He MengFei: 然后，Laplace's Method会不会用，我刚刚已经详细说了，Laplace's Method有两个，一个是缩，先缩它的这个，先缩它的积分上限。最后延展正负无穷，延展成正负无穷的那个解，怎么做？就是有的时候，你得到一些积分的公式，我会给你。这个是这样的。然后会做stationary phase也是一个例子。
+
+He MengFei: 然后会做rescaling，在rescaled的方程上，你知道bifurcation怎么回事，能够identify bifurcation parameters。然后根据bifurcation parameters会绘画出bifurcation diagram，并且能够identify是哪一种bifurcation，是pitchfork，还是saddle-node，还是transcritical，还是imperfect pitchfork and so on，只要对因果有了解就可以。
+
+He MengFei: 然后对于长期数的ODE, 大家要会用characteristic equation来写，大家会用characteristic equation来解。啊。然后会做boundary layer。知道boundary layer的基本假设，然后会做asymptotic matching来确定它的一些未知的系数。能够判断boundary layer。然后当然你要会做boundary layer，包含你要知道boundary layer在哪。如果问题给你，我不会告诉你这边有boundary layer，你要能够判断在哪。第二个，你要根据boundary balance，判断boundary layer 渐进是多少。是怎么根据ε来scale，根据我的系统的小量来scale。
+
+He MengFei: 呃，然后就是会推，会推着这个东西，会推，说明WKB会做，WKB会做。
+
+He MengFei: 然后知道什么叫turning point，什么叫WKB不work了，什么意思。然后会到我过了会让WKB，我刚擦掉了WKB 不work的时候，你要重新要回到boundary layer，要设置重新处理那个WKP里面一个 turning point附近有一个boundary layer，就是inner layer。你要会专门对他处理。处理的过程中，你要知道，啊，知道怎么能够得到它的thickness。
+
+He MengFei: 然后multiple time scale呢，multiple scale analysis，大家要会做，要知道。最简单的啊，你不用太复杂，你最简单知道two timing，最简单的two timing——t和εt，如果是这样的问题，大家会不会做，这个问题掌握了，你基本就掌握了。后面那些东西是一些啊更加精细的东西。
+
+He MengFei: 然后会离散化，给一个function，然后变成一个可操作的离散，difference equation。就是这样，大概就这么些东西。
+
+He MengFei: 需要的东西，大家可以写一页cheat sheet，大家可以带A4纸一页正反面，你自己写你觉得对你有帮助东西。然后考试中明确要使用的公式，我会给出。其他的事，还有，还有什么，有问题可以提问来。
+
+He MengFei: 什么？
+
+Liang Zhuyang: 对积分能力有要求吗？
+
+He MengFei: 没有要求，你最基本的知道就行。最基本的积分的能力，我想一下，什么是积分啊？
+
+Wu Zhiyang: 什么分部积分啊，乱七八糟的，什么极坐标积分啊
+
+Liang Zhuyang: 就是基础函数的积分
+
+He MengFei: 没有要求，没有要求
+
+Student 1: 老师有几道题目啊
+
+He MengFei: 呃，我没有完全想好，大概七八道题吧，每个题十几二十分钟。当然，大题里面分小题，复杂题目会引导你们。小题是为了引导啊，严格走步骤分，这相当于是蛮重的。不会全空的。对数学技巧没有要求。大家可能中学数学就够了，对数学观念有要求。这课没学懂不行，你学懂就行，不会算你又怎么样啊？你你一个积分不会算，放在你那里我觉得还是得大分，我扣你最后一两分。会作为基本底线，你要能解释这个物理这个步骤和物理意义是什么，base的function是什么，优缺点这些东西啊。没有问题，我们就结束，行。
+
+Chen Li: 期末考试成绩占60，会不会调啊？
+
+Student 2: 老师，我想问一下是中文答卷还是英文答卷？
+
+He MengFei: 英文答卷，但是考试的时候，不会的东西可以问我。你看你看我，我们这个考卷都要上传的。
+
