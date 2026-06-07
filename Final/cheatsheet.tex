@@ -1,0 +1,484 @@
+\documentclass[10pt,a4paper]{article}
+
+% === XeLaTeX 中文 ===
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+\setCJKsansfont{SimHei}
+
+% === 页面布局 ===
+\usepackage[margin=0.65cm,footskip=0pt,headheight=11pt,headsep=3pt]{geometry}
+\usepackage{multicol}
+\usepackage[compact]{titlesec}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\textsf{\textbf{高等应用数学 Cheat Sheet}}}
+\fancyhead[C]{\footnotesize\textsf{2026 Spring · He MengFei}}
+\fancyhead[R]{\footnotesize\textsf{\thepage}}
+\renewcommand{\headrulewidth}{0.3pt}
+
+% === 防溢出 ===
+\sloppy
+\setlength{\emergencystretch}{1.2em}
+\setlength{\hfuzz}{5pt}
+
+% === 宽松但不过度 ===
+\setlength{\columnsep}{0.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5pt plus 1pt}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlength{\abovedisplayshortskip}{1.5pt}
+\setlength{\belowdisplayshortskip}{1.5pt}
+
+% === 标题：正文用 11pt，节标题用 \normalsize(10pt) 加粗 ===
+\titleformat{\section}{\normalfont\bfseries\normalsize}{}{0pt}{}
+\titlespacing{\section}{0pt}{4pt}{1.5pt}
+\titleformat{\subsection}{\normalfont\bfseries}{}{0pt}{}
+\titlespacing{\subsection}{0pt}{2pt}{0.5pt}
+
+% === 列表稍微透气 ===
+\setlist{nosep,leftmargin=*,itemsep=1pt,topsep=1pt,partopsep=0pt,parsep=0pt}
+
+\newcommand{\eps}{\epsilon}
+\newcommand{\pder}[2]{\frac{\partial #1}{\partial #2}}
+
+\begin{document}
+\fontsize{9.3}{11.5}\selectfont
+\begin{multicols}{2}
+
+% ============================================================
+\section{1. 渐近展开基础}
+
+\textbf{三个记号}（$x \to x_0$）:
+\begin{itemize}
+\item $f \ll g$（小o）: $\lim f/g = 0$
+\item $f \sim g$（渐近等价）: $\lim f/g = 1$
+\item $f = O(g)$（大O）: $\limsup |f/g| < \infty$
+\end{itemize}
+
+\textbf{渐近序列}: $\{\phi_n(x)\}$ 满足 $\phi_{n+1} \ll \phi_n$\;
+例: $\{1, x, x^2, \dots\}$ ($x\to0$); \ $\{x^{-1}, x^{-2}, \dots\}$ ($x\to\infty$)
+
+\textbf{Poincaré 渐近展开}:
+$f(x) \sim \sum_{n=1}^{\infty} a_n \phi_n(x)$ 当且仅当对每个 $N$:
+$R_N(x) \equiv f(x) - \sum_{n=1}^N a_n\phi_n(x) = O(\phi_{N+1})$
+即\textbf{余项远小于最后保留的项}。
+
+\textbf{系数逐次确定}（给定 $\{\phi_n\}$）:
+$a_1 = \lim\frac{f}{\phi_1},\ a_2 = \lim\frac{f-a_1\phi_1}{\phi_2},\ \ldots$
+
+\textbf{非标准序列展开}（老师点名考点）:
+\begin{itemize}
+\item 给定 $f(x)=\sqrt{25+x}$ 和 $\{\phi_n\}=\{1,\cos x,\sin x,\sin^2 x\}$
+\item 按定义逐项求:
+$a_1 = \lim_{x\to0} \frac{\sqrt{25+x}}{1} = 5$
+$a_2 = \lim_{x\to0} \frac{\sqrt{25+x}-5}{\cos x}
+      = \frac{1/10}{1} = \frac{1}{10}$
+（分子 Taylor: $\sqrt{25+x}=5+x/10-x^2/200+\cdots$）
+\item 后续系数同理逐次分解——\textbf{给定序列后系数唯一}，但序列选择不唯一
+\end{itemize}
+
+\textbf{收敛级数 vs 渐近级数}:
+收敛: 固定 $x$, $N\to\infty$; \ 渐近: 固定 $N$, $x\to x_0$\;
+收敛 Taylor 级数是渐近展开的特例。
+
+\textbf{超越小量}: $f \ll x^{-\alpha}$ 对任意 $\alpha>0$ 成立。
+例: $e^{-x}\ (x\to\infty)$, $e^{-1/\eps}\ (\eps\to0^+)$
+\textbf{后果}: $f$ 和 $f+ce^{-x}$ 具有\textbf{相同的幂次渐近展开}——超越小项在幂级数中"不可见"。
+
+\textbf{有效操作}: $+,-,\times,\div,\int$ 可逐项做;
+\textbf{逐项求导、嵌套代入}需谨慎。
+
+\textbf{最优截断}（核心例子）:
+$\int_0^\infty \frac{e^{-xt}}{1+t}dt \sim \sum_{n=0}^{\infty}(-1)^n\frac{n!}{x^{n+1}}$
+（级数发散，但渐近有效）
+$|R_N| < |a_{N+1}|$——余项绝对值不超过第一个被略去的项。
+相邻部分和夹逼真值，两项夹逼最紧时停止。
+
+
+% ============================================================
+\section{2. Laplace 方法}
+
+$I(x) = \int_a^b f(t)\, e^{x\phi(t)}dt,\quad x \to \infty$
+
+\textbf{核心直觉}: $e^{x\phi(t)}$ 在 $\phi(t)$ 最大值点 $t_c$ 处形成无限尖锐的峰，
+宽度 $\sim 1/\sqrt{x}$，仅 $t_c$ 邻域对积分有贡献。
+
+\textbf{标准四步}（老师逐条口述）:
+\begin{enumerate}
+\item \textbf{缩上限}: 确定 $\phi(t)$ 在 $[a,b]$ 上的最大值点 $t_c$，
+将积分压缩到 $t_c$ 附近小邻域
+\item \textbf{延展 $\pm\infty$}: 尾部贡献指数级小
+（$\int_{t_c+\delta}^\infty e^{-x(t-t_c)^2}dt < \frac{e^{-x\delta^2}}{x\delta} \ll O(1/\sqrt{x})$），可忽略
+\item \textbf{Taylor 展开}: $\phi(t) \approx \phi(t_c) + \frac{1}{2}\phi''(t_c)(t-t_c)^2$
+（仅保留到二阶，高阶项 $\times$ 指数衰减可忽略）
+\item \textbf{高斯终结}: $\int_{-\infty}^{\infty} e^{-x a (t-t_c)^2/2} dt = \sqrt{\frac{2\pi}{x|a|}}$
+\end{enumerate}
+
+\textbf{经典例子}:
+\begin{itemize}
+\item $\int_{-\infty}^{\infty} e^{-x\cosh t}dt \sim \sqrt{\frac{2\pi}{x}}e^{-x}\bigl(1-\frac{1}{8x}+\frac{9}{128x^2}+\cdots\bigr)$
+\item \textbf{Gamma → Stirling}（考试核心）:
+$\Gamma(x+1)=\int_0^\infty t^x e^{-t}dt$, 换元 $t=x\tau$,
+在 $\tau=1$ 展开 $\ln\tau-\tau = -1 - \frac{(\tau-1)^2}{2} + \cdots$
+$\Rightarrow \boxed{n! \sim n^n e^{-n} \sqrt{2\pi n}}$
+$\ln n! = n\ln n - n + O(\ln n)$
+\end{itemize}
+
+\textbf{Laplace + 稳定相 = 同一套技术链}:
+实指数（尖峰）vs 虚指数（振荡抵消），共享 Taylor 展开 + 高斯积分。
+
+
+% ============================================================
+\section{3. 稳定相方法}
+
+$I(x) = \int_a^b f(t)\, e^{ix\psi(t)}dt,\quad x \to \infty$
+
+\textbf{Riemann-Lebesgue 引理}:
+$f$ 可积 $\Rightarrow \int_a^b f(t) e^{ixt}dt = o(1)$\;
+若进一步 $f \in C^1$，分部积分得 $O(1/x)$。
+直觉：快速振荡导致正负抵消。
+
+\textbf{稳定相点}: $\psi'(t_s)=0$，振荡在此"减速"，抵消最弱→主要贡献来源。
+
+展开: $\psi(t) \approx \psi(t_s) + \frac{1}{2}\psi''(t_s)(t-t_s)^2$
+
+\textbf{关键公式}:
+$\int_{-\infty}^{\infty} e^{\pm i x a t^2/2}dt = \sqrt{\frac{2\pi}{x|a|}} e^{\pm i\pi/4}$
+
+\textbf{Fresnel 积分}:
+$\int_0^\infty \sin(xt^2)dt = \sqrt{\frac{\pi}{8x}}$
+
+\textbf{Bessel $J_0(x)$ 的大 $x$ 渐近}:
+$J_0(x) = \frac{1}{\pi}\int_0^\pi \cos(x\sin t)dt \sim \boxed{\sqrt{\frac{2}{\pi x}}\cos\!\bigl(x-\frac{\pi}{4}\bigr)}$
+推导关键: $\sin t$ 在 $t_s=\pi/2$ 有稳定相点，围道变形用 Fresnel。
+
+\textbf{无驻点对策}: 分部积分法——这也是从积分渐近过渡到边界层分析的桥梁。
+
+
+% ============================================================
+\section{4. ODE 局部分析}
+
+$y'' + P(x)y' + Q(x)y = 0$，在 $x_0$ 分类:
+
+\begin{itemize}
+\item \textbf{常点 (Ordinary)}: $P,Q$ 在 $x_0$ 解析 → Taylor 级数解
+\item \textbf{正则奇点 (Regular Singular)}: $(x-x_0)P$ 和 $(x-x_0)^2 Q$ 在 $x_0$ 解析
+  → \textbf{Frobenius 级数}: $y = \sum_{n=0}^{\infty} a_n (x-x_0)^{n+\alpha}$，
+  $\alpha$ 由指标方程 (indicial equation) 确定
+\item \textbf{非正则奇点 (Irregular Singular)}: 以上都不满足
+  → \textbf{主导平衡} $y = e^{S(x)}$（§5）
+\end{itemize}
+
+\textbf{例} $x^n y'' + xy' + y = 0$ 在 $x_0=0$:
+$n=0$ 常点; \ $n=1,2$ 正则奇点; \ $n \ge 3$ 非正则奇点
+
+\textbf{Airy 方程在无穷远}: $y'' = xy$, 令 $t = 1/x$,
+化为 $\ddot{y} + \frac{2}{t}\dot{y} - \frac{1}{t^5}y = 0$,
+$t_0=0$ 是非正则奇点 $\rightarrow$ 需用主导平衡。
+
+
+% ============================================================
+\section{5. 主导平衡 (Dominant Balance)}
+
+\textbf{Ansatz}: $y = e^{S(x)}$, 则
+$y' = S' e^S$, \ $y'' = [S'' + (S')^2] e^S$
+
+代入 ODE: $S'' + (S')^2 + P S' + Q = 0$
+
+\textbf{核心假设}: $S'' \ll (S')^2$
+$\Rightarrow (S')^2 \sim -Q$（或与其他主导项平衡）
+
+\textbf{积分规则}（$S' \sim x^{-n}$, $x \to 0^+$）:
+$n>1$: $S \sim \frac{x^{-(n-1)}}{n-1}$;
+$n=1$: $S \sim \ln x$;
+$n<1$: $S \sim x^{1-n}$
+
+\textbf{Airy 主导平衡例}（$y'' = x^{-3}y$, $x \to 0^+$）:
+$S' \sim \pm x^{-3/2}$, $S \sim \mp 2x^{-1/2}$,
+修正 $C \sim \frac{3}{4}\ln x$
+$\Rightarrow y \sim C\,x^{3/4}\,e^{\pm 2x^{-1/2}}\bigl(1 \mp \frac{3}{16}x^{1/2} + \cdots\bigr)$
+
+\textbf{主导平衡 = 所有后续方法的技术根基}:
+$y = e^S$ 拟设是 WKB ($y = e^{S/\eps}$)、边界层伸缩变换、转折点内层分析的共同来源。
+
+
+% ============================================================
+\section{6. 边界层 (Boundary Layer)}
+
+$\eps y'' + a(x)y' + b(x)y = 0$, $\eps \ll 1$\;
+$\eps \to 0$ 时方程降阶 → 无法满足全部 BC → \textbf{边界层}
+
+\textbf{前置：Characteristic Equation}（常系数线性 ODE 基础）:
+设 $y = e^{\lambda x}$，代入 ODE 得特征方程，解出 $\lambda$。
+这是外解和内解的基础求解手段（老师强调必须掌握）。
+
+\textbf{五步流程}（老师逐条口述）:
+\begin{enumerate}
+\item \textbf{外解 (Outer)}: 设 $\eps = 0$，解降阶 ODE，用远离 BL 一侧的 BC
+\item \textbf{判位置}: $a(x) > 0 \Rightarrow$ BL 在左边界 $x=0$;
+  $a(x) < 0 \Rightarrow$ BL 在右边界 $x=1$（题目不会告诉你，要自己判断）
+\item \textbf{内解 (Inner)}: 伸缩 $X = (x-x_0)/\delta$，
+  主导平衡定 $\delta = \eps^\gamma$（通常 $\delta = \eps$）
+\item \textbf{MAE 匹配}: $\displaystyle\lim_{X\to\infty} Y_{\text{in}} = \lim_{x\to x_0} y_{\text{out}}$
+  定未知系数
+\item \textbf{复合解 (Composite)}:
+  $y_{\text{comp}} = y_{\text{in}} + y_{\text{out}} - y_{\text{overlap}}$
+\end{enumerate}
+
+\textbf{主例}（贯穿始终）:
+$\eps y'' + (1+\eps)y' + y = 0$, $y(0)=0$, $y(1)=1$\;
+精确解: $y = \frac{e^{-x} - e^{-x/\eps}}{e^{-1} - e^{-1/\eps}}$\;
+超越小项 $e^{-1/\eps}$ 无法 Taylor 展开 → 奇异摄动标志\;
+外解: $y_{\text{out}} = e^{1-x}$; \ BL 在 $x=0$, $\delta = \eps$\;
+内解: $Y_{\text{in}} = e - e^{1-X}$; \ 复合: $y_{\text{comp}} = e^{1-x} - e^{1-x/\eps}$
+
+\textbf{边界层厚度变化}:
+\begin{itemize}
+\item 标准线性边界层: $\delta = \eps$
+\item 内层/角层 ($a(x)$ 在区间内变号): $\delta = \eps^{1/2}$（更厚）
+\item 转折点内层: $\delta = \eps^{2/3}$
+\end{itemize}
+
+\textbf{非线性边界层}: 使用\textbf{相平面几何}方法定位——
+化为 $(y,z=y')$ 二维系统，快变区 $z' = O(1/\eps)$ vs 慢变区 $z' = O(1)$。
+
+
+% ============================================================
+\section{7. WKB 方法}
+
+$\eps^2 y'' = Q(x) y$, \quad Ansatz: $y = e^{S/\eps}$,
+$S = S_0 + \eps S_1 + \eps^2 S_2 + \cdots$
+
+\textbf{推导}:
+$y' = \frac{S'}{\eps}e^{S/\eps}$,
+$y'' = \frac{1}{\eps^2}\bigl[\eps S'' + (S')^2\bigr]e^{S/\eps}$
+
+代入 ODE: $\eps S'' + (S')^2 = Q$
+
+\textbf{逐阶求解}:
+\begin{itemize}
+\item $O(1)$: $(S_0')^2 = Q \Rightarrow S_0' = \pm\sqrt{Q},\; S_0 = \pm\int\!\sqrt{Q}\,dx$
+\item $O(\eps)$: $S_0'' + 2S_0'S_1' = 0 \Rightarrow
+  S_1' = -\frac{S_0''}{2S_0'} = -\frac{Q'}{4Q},\;
+  S_1 = -\frac{1}{4}\ln Q$
+\end{itemize}
+
+\textbf{WKB 通解}:
+$\boxed{y \sim \frac{1}{Q^{1/4}}\Bigl[C_1 e^{\frac{1}{\eps}\int\!\sqrt{Q}dx} + C_2 e^{-\frac{1}{\eps}\int\!\sqrt{Q}dx}\Bigr]}$
+
+根据 $Q(x)$ 符号:
+\begin{itemize}
+\item $Q > 0$（指数型）: $y \sim Q^{-1/4}\bigl[c_3 e^{-\frac{1}{\eps}\int\!\sqrt{Q}} + c_4 e^{+\frac{1}{\eps}\int\!\sqrt{Q}}\bigr]$
+\item $Q < 0$（振荡型）: $y \sim (-Q)^{-1/4}\bigl[c_1\cos\frac{\int\!\sqrt{-Q}}{\eps} + c_2\sin\frac{\int\!\sqrt{-Q}}{\eps}\bigr]$
+\end{itemize}
+
+\textbf{转折点 (Turning Point)}: $Q(x_0) = 0$,
+$1/Q^{1/4}$ 发散 → WKB 失效。失效区域: $|x-x_0| < O(\eps^{2/3})$
+
+\textbf{老师强调逻辑链}: WKB 不 work → \textbf{回到 boundary layer 思路} →
+turning point 附近有 inner layer → 专门处理 → 主导平衡定厚度
+
+\textbf{内层处理}: 伸缩 $X = (x-x_0)/\eps^{2/3}$,
+代入得 $\boxed{Y_{XX} = XY}$（Airy 方程）
+
+\textbf{Airy 函数渐近行为}:
+\begin{itemize}
+\item $\operatorname{Ai}(Z\to+\infty) \sim \frac{1}{2\sqrt{\pi}}Z^{-1/4}e^{-\frac{2}{3}Z^{3/2}}$（衰减）
+\item $\operatorname{Ai}(Z\to-\infty) \sim \frac{1}{\sqrt{\pi}}(-Z)^{-1/4}\sin\!\bigl(\frac{2}{3}(-Z)^{3/2} + \frac{\pi}{4}\bigr)$
+\item $\operatorname{Bi}(Z\to+\infty) \sim \frac{1}{\sqrt{\pi}}Z^{-1/4}e^{+\frac{2}{3}Z^{3/2}}$（增长）
+\end{itemize}
+\textbf{有界性要求 → 丢弃 Bi，只留 Ai}。
+
+\textbf{单转折点连接公式}（设 $x>x_0$ 需有界→只留 Ai）:
+\begin{align*}
+x < x_0\;(Q<0,\text{振荡}):\;
+y_L &\sim \frac{2C}{(-Q)^{1/4}}
+\sin\!\Bigl(\frac{1}{\eps}\!\int_x^{x_0}\!\!\sqrt{-Q}\,dt + \frac{\pi}{4}\Bigr)\\[2pt]
+x > x_0\;(Q>0,\text{衰减}):\;
+y_R &\sim \frac{C}{Q^{1/4}}
+e^{-\frac{1}{\eps}\!\int_{x_0}^x\!\sqrt{Q}\,dt}
+\end{align*}
+
+\textbf{双转折点 Bohr-Sommerfeld 量子化条件}:
+$\displaystyle\frac{1}{\eps}\int_A^B \sqrt{E-V(x)}\,dx = \bigl(n+\tfrac{1}{2}\bigr)\pi$, $n=0,1,2,\ldots$
+
+\textbf{Sturm-Liouville 理论}:
+$(p y')' + q y = -\lambda w y$（$p,w > 0$）
+$\Rightarrow \lambda_0 < \lambda_1 < \cdots$ 均为实数;
+$\{y_n\}$ 关于 $w(x)$ 正交归一: $\int y_n y_m w\,dx = \delta_{nm}$;
+完备则可展开任意函数。
+
+
+% ============================================================
+\section{8. 分岔理论 (Bifurcation)}
+
+\textbf{考试标准四步}（老师口述路径）:
+\begin{enumerate}
+\item 在 rescaled 方程上选取控制参数 $r$
+\item 求不动点: $f(x^*, r) = 0$
+\item 判定稳定性: $f'(x^*) < 0$ 稳定, $f'(x^*) > 0$ 不稳定
+\item 绘制分岔图 ($x^*$ vs $r$)，identify 分岔类型
+\end{enumerate}
+
+\textbf{三类经典范式}（必须能默写并识别）:
+
+\subsection*{鞍结分岔 (Saddle-Node): $\dot{x} = r + x^2$}
+\begin{itemize}
+\item $r < 0$: $x = \pm\sqrt{-r}$（一稳定、一不稳定）
+\item $r = 0$: $x = 0$（半稳，half-stable）
+\item $r > 0$: 无不动点 → 两个不动点碰撞湮灭 (annihilation)
+\end{itemize}
+
+\subsection*{跨临界分岔 (Transcritical): $\dot{x} = rx - x^2$}
+不动点 $x=0$ 和 $x=r$ 始终存在;
+$r$ 穿过 0 时两者交换稳定性。
+
+\subsection*{叉形分岔 (Pitchfork):}
+\textbf{超临界}: $\dot{x} = rx - x^3$\;
+$r \le 0$: $x=0$ 稳定\;
+$r > 0$: $x=0$ 不稳, $x=\pm\sqrt{r}$ 稳定（对称破缺）\;
+具有 $x \to -x$ 对称性。
+
+\textbf{亚临界}: $\dot{x} = rx + x^3$（$\pm\sqrt{-r}$ 在 $r<0$ 时出现但不稳）
+
+\textbf{不完备叉形 (Imperfect Pitchfork)}:
+$\dot{x} = s + rx - x^3$（两个参数: $r$ 与不对称 $s$）
+参数空间 $(r,s)$ 中有\textbf{尖点 (cusp)} 结构;
+$s \neq 0$ 时完美叉形被破坏，分岔变为鞍结型。
+
+\subsection*{二维分岔}
+加 $\dot{y} = -y$ 提供稳定方向。
+不动点类型: 稳定/不稳定结点、鞍点、中心、稳定/不稳定焦点。
+
+\textbf{极限环}: 孤立的闭合轨道（不同于中心周围的连续闭轨族）
+
+\textbf{Liénard 定理}: $\ddot{x} + f(x)\dot{x} + g(x) = 0$
+（$g$ 奇函数, $f$ 偶函数, $F(x)=\int_0^x f(u)du$ 有单零点）
+$\Rightarrow$ 存在\textbf{唯一的稳定极限环}。
+
+\textbf{延迟分岔 (Delayed Bifurcation)}:
+慢变参数 $s = \eps t$ 扫描时，跳跃不在临界点精确发生，而是延迟。
+$\boxed{\Delta s \sim 2.338\,\eps^{2/3}}$
+推导: Riccati 方程 → Airy 方程（与 §7 转折点技术相同）。
+$\eps^{2/3}$ 标度不是巧合——都来自三次转折。
+
+
+% ============================================================
+\section{9. 多尺度分析}
+
+\textbf{失效类型}: 长时间演化 → 正则摄动积累相位误差 → \textbf{久期项 (Secular Term)}
+
+\textbf{Two-Timing}: $T_0 = t$（快尺度）, $T_1 = \eps t$（慢尺度）
+
+\textbf{导数展开}:
+$\frac{d}{dt} = \pder{}{T_0} + \eps\pder{}{T_1} + \cdots$,
+$\frac{d^2}{dt^2} = \pder{^2}{T_0^2} + 2\eps\frac{\partial^2}{\partial T_0\partial T_1} + \cdots$
+
+\textbf{标准步骤}（老师：掌握 $t$ 和 $\eps t$ 就基本掌握了整个方法）:
+\begin{enumerate}
+\item 展开 $Y = Y_0 + \eps Y_1 + \eps^2 Y_2 + \cdots$
+\item $O(1)$: $\pder{^2Y_0}{T_0^2} + \omega_0^2 Y_0 = 0
+  \Rightarrow Y_0 = A(T_1)e^{i\omega_0 T_0} + c.c.$
+\item $O(\eps)$: 消 $e^{\pm i\omega_0 T_0}$ 共振项
+  $\rightarrow$ \textbf{振幅方程} $A' = f(A)$
+\item 令 $A = R(T_1)e^{i\theta(T_1)}$，分离实/虚部得 $R', \theta'$
+\end{enumerate}
+
+\subsection*{Duffing 振子: $\ddot{y} + y + \eps y^3 = 0$}
+
+\textbf{正则摄动为何失败}:
+$O(1)$: $y_0 = \cos t$\;
+$O(\eps)$: $\ddot{y}_1 + y_1 = -\cos^3 t = -\frac{1}{4}\cos 3t - \frac{3}{4}\cos t$\;
+$\cos t$ 是共振项 → $y_1 \sim -\frac{3}{8}t\sin t$（久期项！）
+\textbf{根源}: Duffing 项改变了频率 ($\omega \neq 1$)，
+但正则摄动强迫零阶以 $\omega=1$ 振荡。
+
+\textbf{Poincaré-Lindstedt 方法}（仅适用周期解）:
+同时展开 $y$ 和 $\omega$: $\tau = \omega t$,
+$\omega = 1 + \eps\omega_1 + \cdots$\;
+$O(\eps)$ 消 $\cos\tau$ 共振 $\Rightarrow 2\omega_1 - 3/4 = 0 \Rightarrow \omega_1 = 3/8$\;
+$\boxed{\omega = 1 + \frac{3}{8}\eps}$
+
+\textbf{多尺度分析}（更通用）:
+$O(1)$: $Y_0 = A(T_1)e^{iT_0} + c.c.$\;
+$O(\eps)$ 消共振: $3A^2\bar{A} + 2iA' = 0$\;
+令 $A = R e^{i\theta}$:
+实部: $-2R\theta' + 3R^3 = 0 \Rightarrow \theta' = \frac{3}{2}R_0^2$\;
+虚部: $2R' = 0 \Rightarrow R' = 0$（无阻尼，振幅守恒）
+$\Rightarrow y \approx \cos\bigl((1 + \frac{3\eps}{8})t\bigr)$ \textbf{与 P-L 一致！}
+
+\subsection*{弱阻尼振子: $\ddot{y} + 2\eps\dot{y} + y = 0$}
+$O(\eps)$ 消共振 → $A' + A = 0 \Rightarrow A = A_0 e^{-T_1}$，
+振幅指数衰减。
+
+\subsection*{Van der Pol 方程: $\ddot{y} + \eps(y^2-1)\dot{y} + y = 0$}
+非线性阻尼: $|y|<1$ 负阻尼（激励），$|y|>1$ 正阻尼（耗散）
+
+\textbf{振幅方程}: $2R' = -R(R^2-1)$
+\begin{itemize}
+\item $R = 0$: 不稳定不动点
+\item $R = 1$: 稳定不动点 → 极限环振幅 $= 2$
+\item 解析积分: $R(T_1) = \dfrac{1}{\sqrt{1 + (R_0^{-2} - 1)e^{-T_1}}}$
+\item $T_1 \to \infty$ 时 $R \to 1$，不论初始值如何
+\end{itemize}
+\textbf{$R'$ 本质上是一个叉形分岔结构}（与 §8 合流）。
+
+\subsection*{P-L vs 多尺度对比}
+\begin{itemize}
+\item P-L: 一个伸缩时间 $\tau=\omega t$，调整 $\omega$ 消久期项 → \textbf{仅周期解}
+\item 多尺度: 多个独立时间变量 $T_0,T_1,\dots$，消共振项 → \\
+  周期 + 阻尼 + 极限环趋近均可处理（更通用）
+\end{itemize}
+
+
+% ============================================================
+\section{10. 补充知识}
+
+\subsection*{Rayleigh-Lorentz 振子}
+$\ddot{x} + \eps(\dot{x}^2 - 1)\dot{x} + x = 0$\;
+与 Van der Pol 的区别: 阻尼依赖 $\dot{x}^2$（非 $x^2$）\;
+核心概念: \textbf{能量不守恒} + \textbf{绝热不变量 (Adiabatic Invariant)}
+$E/\omega \approx$ 常数（参数缓慢变化时作用量近似守恒）
+
+\subsection*{离散化 (Discretization)}
+将连续 ODE/PDE 转为离散差分方程:
+
+\textbf{一阶导数}:
+向前: $y'(x_i) \approx \dfrac{y_{i+1} - y_i}{h}$ \hfill [$O(h)$]\;
+向后: $y'(x_i) \approx \dfrac{y_i - y_{i-1}}{h}$ \hfill [$O(h)$]\;
+中心: $y'(x_i) \approx \dfrac{y_{i+1} - y_{i-1}}{2h}$ \hfill [$O(h^2)$]
+
+\textbf{二阶导数}:
+$y''(x_i) \approx \dfrac{y_{i+1} - 2y_i + y_{i-1}}{h^2}$ \hfill [$O(h^2)$]
+
+\textbf{三类应用}:
+\begin{enumerate}
+\item 边值问题: $y'' = f(x,y,y')$ → 网格点 → 差分方程 → 三对角线性系统
+\item 特征值问题: $y'' = \lambda y$ → $A\mathbf{y} = \lambda\mathbf{y}$（矩阵特征值）
+\item 分岔分析: 连续 $\dot{x}=f(x;r)$ → 迭代 $x_{n+1}=F(x_n;r)$
+\end{enumerate}
+
+\subsection*{$\eps^{2/3}$ 标度两处出现}
+转折点内层厚度（§7）+ 延迟分岔量（§8）——都源于三次转折，不是巧合。
+
+
+% === 底部总结 ===
+\vfill
+\begin{center}
+\rule{0.4\columnwidth}{0.3pt}\\[3pt]
+{\small\textbf{三条逻辑链}}\\[1pt]
+{\normalsize $e^{-1/\eps}$（源头）$\;\to\;$ Dominant Balance + Rescaling（通用前置）}\\[1pt]
+{\normalsize $\to$ \textbf{(1) Boundary Layer}（空间局部）\;/\;
+        \textbf{(2) WKB}（全局坍塌）\;/\;
+        \textbf{(3) Multiple Scale}（长时间）}\\[1pt]
+{\normalsize $\to$ Normal Form $\;\to\;$ Bifurcation}
+\end{center}
+
+\end{multicols}
+\end{document}
